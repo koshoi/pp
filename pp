@@ -76,6 +76,9 @@ class PlotSpec:
 
         if self.isComposite:
             df = pd.pivot_table(df, index=self.x, columns=self.compositeY[0], values=self.compositeY[1])
+        elif self.y[0] != '*':
+            self.y.append(self.x)
+            df = df[self.y]
 
         DEBUG("DF")
         DEBUG(df)
@@ -91,6 +94,7 @@ class PlotSpec:
             kind = 'bar'
             stacked = True
 
+        DEBUG("XAXIS", xAxis)
         df.plot(x=xAxis, kind=kind, stacked=stacked)
         if not opts.nogrid:
             plt.grid()
