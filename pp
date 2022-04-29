@@ -85,7 +85,13 @@ class PlotSpec:
         if not self.isComposite:
             xAxis = self.x
 
-        df.plot(x=xAxis, kind=opts.kind)
+        stacked = False
+        kind = opts.kind
+        if opts.kind == 'sbar':
+            kind = 'bar'
+            stacked = True
+
+        df.plot(x=xAxis, kind=kind, stacked=stacked)
         if not opts.nogrid:
             plt.grid()
 
@@ -100,7 +106,7 @@ parser = ArgumentParser(description='Plot data')
 parser.add_argument('-i', '--input',   dest='input',      type=str,            default='',     help='input file with data (by default reads from stdin)')
 parser.add_argument('-f', '--format',  dest='format',     type=str,            default='json', help='data format (available: json)')
 parser.add_argument('-s', '--groupby', dest='group',      type=str,            default='',     help='output multiple plots grouped by a list of parameters')
-parser.add_argument('-p', '--plot',    dest='plotFormat', type=str,            default='line', help='specify plot format (line or bar)')
+parser.add_argument('-p', '--plot',    dest='plotFormat', type=str,            default='line', help='specify plot format (line, bar, sbar (stacked_bar))')
 parser.add_argument('-n',  '--name',   dest='name',       type=str,            default='',     help='specify name for plot')
 parser.add_argument('--nogrid',        dest='nogrid',     action='store_true', default=False,  help='disable grid on plot')
 
